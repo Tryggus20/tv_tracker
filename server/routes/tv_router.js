@@ -44,10 +44,27 @@ router.post("/", (req, res) => {
 });
 
 
-//UPDATE ROUTE
+//PUT ROUTE
 router.put("/:id", (req, res) => {
-    
-})
+const showId = req.params.id;
+const updatedShow = req.body;
+const queryText = `UPDATE "shows" SET "show_name" = $1, "season" = $2, "episode" = $3, "genre" = $4, "notes" = $5, "series_ended" = $6, "is_completed" = $7, "last_updated" = $8 `;
+const values = [
+    updatedShow.show_name,
+    updatedShow.season,
+    updatedShow.episode,
+    updatedShow.genre,
+    updatedShow.notes,
+    updatedShow.series_ended,
+    updatedShow.is_completed,
+    updatedShow.last_updated,
+  ];
+  pool.query(queryText, values).then(() => 
+    res.sendStatus(204)).catch((err) => {
+        console.error("Error in Put update show", err);
+        res.sendStatus(500);
+    });
+});
 
 // DELETE ROUTE
 router.delete("/:id", (req, res) => {
