@@ -1,5 +1,6 @@
 -- quick db schema. may make it more complex depending on features wanted
 CREATE TABLE shows (
+    id SERIAL PRIMARY KEY,
     show_name VARCHAR(150),
     season INT,
     episode INT,
