@@ -5,7 +5,7 @@ import ShowList from "../ShowList/ShowList";
 function App() {
   return (
     <div className="App">
-      <h1>Hello World</h1>
+      <h1>Track your tv shows here:</h1>
       <Router>
         <Route path="/" exact>
           <ShowList />
