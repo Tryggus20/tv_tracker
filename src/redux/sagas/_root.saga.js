@@ -3,7 +3,8 @@ import axios from "axios"
 
 // Create the rootSaga generator function
 function* watcherSaga() {
-    yield takeEvery("FETCH_SHOWS", fetchAllShows)
+    yield takeEvery("FETCH_SHOWS", fetchAllShows);
+    yield takeEvery("ADD_SHOW", addShowSaga);
     // yield takeEvery("ADD_SHOWS", addShowSaga)
   }
   

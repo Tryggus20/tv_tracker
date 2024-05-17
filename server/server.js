@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const tvRouter = require("./routes/tv_router.js");
-
+const app = express();
 
 // Serve static files
 app.use(bodyParser.json()); // needed for angular requests

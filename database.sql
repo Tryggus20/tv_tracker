@@ -10,3 +10,6 @@ CREATE TABLE shows (
     is_completed BOOLEAN,
     last_updated TIMESTAMP
 );
+
+INSERT INTO shows (show_name, season, episode, genre, notes, series_ended, is_completed, last_updated)
+VALUES ('Game of Thrones', 1, 1, 'fantasy', NULL, true, false, NOW());
