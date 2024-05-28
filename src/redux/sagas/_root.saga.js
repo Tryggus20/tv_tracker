@@ -23,7 +23,7 @@ function* watcherSaga() {
 function* addShowSaga(action) {
     const newShow = action.payload;
     try {
-      yield axios.post('/api/tv/new', newShow);
+      yield axios.post('/api/tv', newShow);
       yield put({ type: 'FETCH_SHOWS' });
     } catch (err) {
       console.log('error in addShowSaga', err);

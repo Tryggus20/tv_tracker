@@ -12,6 +12,8 @@ import {
   TableBody,
 } from "@mui/material";
 import axios from "axios";
+import { addShow } from "../../redux/actions/showActions";
+
 
 function ShowList() {
   const dispatch = useDispatch();
@@ -40,6 +42,21 @@ function ShowList() {
       console.error("Error fetching show details:", error);
     }
   };
+  const handleAddShowClick = () => {
+    if (showDetails) {
+      const showToSave = {
+        name: showDetails.name,
+        season: 1, 
+        episode: 1, 
+        genre: '',
+        notes: '', 
+        doneAiring: showDetails.status === 'Ended',
+        caughtUp: false, 
+        lastUpdated: new Date().toISOString(),
+      };
+      dispatch(addShow(showToSave));
+    }
+  };
 //  *********______*********_________*********______*********_________*********______*********_________
   return (
     <div>
@@ -53,9 +70,19 @@ function ShowList() {
         sx={{ mr: 2 }} 
       />
       <Button variant="contained" color="secondary" onClick={handleSearchClick}>
-        Add New Show
+        Search New Show
       </Button>
       <br />
+      {showDetails && (
+        <div>
+          <h3>{showDetails.name}</h3>
+          <p dangerouslySetInnerHTML={{ __html: showDetails.summary }} />
+          <img src={showDetails.image?.medium} alt={showDetails.name}  />
+          <br/>
+          <Button variant="contained" color="secondary" onClick={handleAddShowClick}>Add Show</Button>
+          <Button variant="contained" color="secondary" >Search Again</Button>
+        </div>
+      )}
       <hr></hr>
       <Paper>
         <Table className="table">
@@ -75,13 +102,6 @@ function ShowList() {
         </Table>
       </Paper>
       <hr />
-      {showDetails && (
-        <div>
-          <h3>{showDetails.name}</h3>
-          <p dangerouslySetInnerHTML={{ __html: showDetails.summary }} />
-          <img src={showDetails.image?.medium} alt={showDetails.name} />
-        </div>
-      )}
     </div>
   );
 }

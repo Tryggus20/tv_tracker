@@ -5,6 +5,8 @@ const shows = (state = [], action) => {
   switch (action.type) {
     case "SET_SHOWS":
       return action.payload;
+      case "Add_SHOW":
+        return [...state, action.payload]
     default:
       return state;
   }
