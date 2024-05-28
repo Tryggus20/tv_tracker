@@ -26,12 +26,12 @@ function ShowList() {
     dispatch({ type: "FETCH_SHOWS" });
   }, [dispatch]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]); 
-  const [selectedShow, setSelectedShow] = useState(null); 
+  const [searchResults, setSearchResults] = useState([]);
+  const [selectedShow, setSelectedShow] = useState(null);
   const [genre, setGenre] = useState("");
   const [notes, setNotes] = useState("");
   const [synopsisShow, setSynopsisShow] = useState(null); // State for selected show synopsis
-
+  const [episodeSynopsis, setEpisodeSynopsis] = useState(null);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -54,8 +54,8 @@ function ShowList() {
         `https://api.tvmaze.com/search/shows?q=${searchQuery}`
       );
       if (response.data.length > 0) {
-        setSearchResults(response.data.slice(0, 5)); 
-        setSelectedShow(null); 
+        setSearchResults(response.data.slice(0, 5));
+        setSelectedShow(null);
       } else {
         alert("No show found with that name");
       }
@@ -64,35 +64,45 @@ function ShowList() {
     }
   };
   const handleAddShowClick = () => {
-    if (selectedShow) { 
+    if (selectedShow) {
       const showToSave = {
-        name: selectedShow.name, 
+        name: selectedShow.name,
         season: 1,
         episode: 1,
-        genre: genre || selectedShow.genres.join(", "), 
+        genre: genre || selectedShow.genres.join(", "),
         notes: notes,
-        doneAiring: selectedShow.status === "Ended", 
+        doneAiring: selectedShow.status === "Ended",
         caughtUp: false,
         lastUpdated: new Date().toISOString(),
       };
       dispatch(addShow(showToSave));
-      handleClearSearch()
+      handleClearSearch();
     }
   };
   const handleClearSearch = () => {
-    setSearchResults([]); 
-    setSelectedShow(null); 
+    setSearchResults([]);
+    setSelectedShow(null);
     setSearchQuery("");
     setGenre("");
     setNotes("");
   };
-  const handleSelectShow = (show) => { 
-    setSelectedShow(show); 
-    setGenre(''); 
-    setNotes(''); 
-  }; 
-// -----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____
-// _____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----
+  const handleSelectShow = (show) => {
+    setSelectedShow(show);
+    setGenre("");
+    setNotes("");
+  };
+  const handleEpisodeClick = async (showId, season, episode) => {
+    try {
+      const response = await axios.get(
+        `https://api.tvmaze.com/shows/${showId}/episodebynumber?season=${season}&number=${episode}`
+      );
+      setEpisodeSynopsis(response.data);
+    } catch (error) {
+      console.error("Error fetching episode details:", error);
+    }
+  };
+  // -----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____
+  // _____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----
   return (
     <div>
       <br />
@@ -109,25 +119,31 @@ function ShowList() {
       </Button>
       <br />
       {/* Display search results if no show is selected */}
-      {!selectedShow && searchResults.length > 0 && ( 
+      {!selectedShow && searchResults.length > 0 && (
         <List>
-        {searchResults.map((result) => {
-          const show = result.show;
-          const year = show.premiered ? new Date(show.premiered).getFullYear() : "N/A";
-          return (
-            <ListItem button onClick={() => handleSelectShow(show)} key={show.id}>
-              <ListItemText primary={`${show.name} (${year})`} />
-            </ListItem>
-          );
-        })}
-      </List>
-      )} 
+          {searchResults.map((result) => {
+            const show = result.show;
+            const year = show.premiered
+              ? new Date(show.premiered).getFullYear()
+              : "N/A";
+            return (
+              <ListItem
+                button
+                onClick={() => handleSelectShow(show)}
+                key={show.id}
+              >
+                <ListItemText primary={`${show.name} (${year})`} />
+              </ListItem>
+            );
+          })}
+        </List>
+      )}
       {/* Display selected show details */}
-      {selectedShow && ( 
+      {selectedShow && (
         <div>
-          <h3>{selectedShow.name}</h3> 
-          <p dangerouslySetInnerHTML={{ __html: selectedShow.summary }} /> 
-          <img src={selectedShow.image?.medium} alt={selectedShow.name} /> 
+          <h3>{selectedShow.name}</h3>
+          <p dangerouslySetInnerHTML={{ __html: selectedShow.summary }} />
+          <img src={selectedShow.image?.medium} alt={selectedShow.name} />
           <br />
           <TextField
             label="Add Notes"
@@ -171,13 +187,35 @@ function ShowList() {
               <TableCell className="table-header-right">Edit</TableCell>
             </TableRow>
           </TableHead>
-          <ShowContainer shows={shows} onShowClick={handleShowClick} />
+          <ShowContainer
+            shows={shows}
+            onShowClick={handleShowClick}
+            onEpisodeClick={handleEpisodeClick}
+          />
         </Table>
       </Paper>
       {synopsisShow && (
-        <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ccc' }}>
+        <div
+          style={{
+            marginTop: "20px",
+            padding: "10px",
+            border: "1px solid #ccc",
+          }}
+        >
           <h3>{synopsisShow.show_name}</h3>
-          <p>{synopsisShow.synopsis || 'No synopsis available.'}</p>
+          <p>{synopsisShow.synopsis || "No synopsis available."}</p>
+        </div>
+      )}
+      {episodeSynopsis && (
+        <div
+          style={{
+            marginTop: "20px",
+            padding: "10px",
+            border: "1px solid #ccc",
+          }}
+        >
+          <h3>{episodeSynopsis.name}</h3>
+          <p>{episodeSynopsis.summary || "No synopsis available."}</p>
         </div>
       )}
       <hr />

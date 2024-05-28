@@ -5,9 +5,9 @@ import axios from "axios";
 import { useDispatch } from 'react-redux';
 
 const buttonStyle = {
-    minWidth: '24px', // Smaller width
-    padding: '4px',   // Smaller padding
-    margin: '0 4px',  // Margin for spacing
+    minWidth: '24px', 
+    padding: '4px',   
+    margin: '0 4px',  
     fontSize: '12px',
   };
   
@@ -17,7 +17,7 @@ const buttonStyle = {
     justifyContent: 'center',
   };
 
-function ShowContainer({ shows, onShowClick }) {
+function ShowContainer({ shows, onShowClick, onEpisodeClick }) {
     const dispatch = useDispatch();
     const handleIncrementSeason = async (id, currentSeason) => {
         try {
@@ -55,8 +55,10 @@ function ShowContainer({ shows, onShowClick }) {
         }
       };
 
-// TODO: Clicking on tv show name will pull up a quick synopsis and picture 
-// TODO: Clicking on the show episode will pull up a synopsis of the episode for that show
+// TODO: Clicking on tv show name will pull up a quick synopsis and picture IN PROGRESS
+// TODO: Clicking on the show episode will pull up a synopsis of the episode for that show IN PROGRESS
+// TODO: ***** Update DB to allow synopsis of show to be saved. 
+// TODO: ****** also save tvmaze ID for each tv show to make episode synopsis searches easier
 
   return (
     <TableBody className="table-body">
@@ -71,9 +73,12 @@ function ShowContainer({ shows, onShowClick }) {
               <Button  className="custom-button" style={buttonStyle} onClick={() => handleIncrementSeason(show.id, show.season)}>&gt;</Button>
               </span></TableCell>
             <TableCell className="centerText">
-              <Button className="custom-button" style={buttonStyle} onClick={() => handleDecrementEpisode(show.id, show.episode)}>&lt;</Button>
+            <div style={cellStyle} onClick={() => onEpisodeClick(show.id, show.season, show.episode)} style={{ cursor: 'pointer', color: 'blue' }}>
+
+              <Button className="custom-button" style={buttonStyle} onClick={() => handleDecrementEpisode(show.id, show.episode)} >&lt;</Button>
               E:{show.episode}
               <Button className="custom-button" style={buttonStyle} onClick={() => handleIncrementEpisode(show.id, show.episode)}>&gt;</Button>
+            </div>
             </TableCell>
             <TableCell className="centerText">{show.genre}</TableCell>
             <TableCell className="centerText">{show.notes || '----'}</TableCell>
