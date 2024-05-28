@@ -41,3 +41,22 @@
     border-bottom: none;
   }
   
+  .custom-button {
+    min-width: 24px;
+    padding: 2px;
+    margin: 0 4px;
+    font-size: 12px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .custom-button:hover {
+    background-color: #333; /* Darker color on hover */
+  }
+
+  .table-body tr:nth-child(odd) {
+    background-color: #f9f9f9; /* Light gray for odd rows */
+  }
+  
+  .table-body tr:nth-child(even) {
+    background-color: #ffffff; /* White for even rows */
+  }

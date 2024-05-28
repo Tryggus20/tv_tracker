@@ -73,7 +73,7 @@ router.post("/", (req, res) => {
 //     });
 // });
 
-router.put('/api/tv/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
     const { id } = req.params;
     const { season, episode } = req.body;
     try {
