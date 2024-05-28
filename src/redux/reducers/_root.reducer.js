@@ -6,7 +6,7 @@ const shows = (state = [], action) => {
     case "SET_SHOWS":
       return action.payload;
       case "Add_SHOW":
-        return [...state, action.payload]
+        return state
     default:
       return state;
   }
