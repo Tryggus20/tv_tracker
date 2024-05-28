@@ -30,6 +30,8 @@ function ShowList() {
   const [selectedShow, setSelectedShow] = useState(null); 
   const [genre, setGenre] = useState("");
   const [notes, setNotes] = useState("");
+  const [synopsisShow, setSynopsisShow] = useState(null); // State for selected show synopsis
+
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -40,6 +42,10 @@ function ShowList() {
 
   const handleNotesChange = (event) => {
     setNotes(event.target.value);
+  };
+
+  const handleShowClick = (show) => {
+    setSynopsisShow(show);
   };
 
   const handleSearchClick = async () => {
@@ -165,9 +171,15 @@ function ShowList() {
               <TableCell className="table-header-right">Edit</TableCell>
             </TableRow>
           </TableHead>
-          <ShowContainer shows={shows} />
+          <ShowContainer shows={shows} onShowClick={handleShowClick} />
         </Table>
       </Paper>
+      {synopsisShow && (
+        <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ccc' }}>
+          <h3>{synopsisShow.show_name}</h3>
+          <p>{synopsisShow.synopsis || 'No synopsis available.'}</p>
+        </div>
+      )}
       <hr />
     </div>
   );

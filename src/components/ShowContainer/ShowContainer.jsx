@@ -17,7 +17,7 @@ const buttonStyle = {
     justifyContent: 'center',
   };
 
-function ShowContainer({ shows }) {
+function ShowContainer({ shows, onShowClick }) {
     const dispatch = useDispatch();
     const handleIncrementSeason = async (id, currentSeason) => {
         try {
@@ -63,8 +63,9 @@ function ShowContainer({ shows }) {
       {Array.isArray(shows) && shows.length > 0 ? (
         shows.map((show) => (
           <TableRow className="table-row" key={show.id}>
-            <TableCell>{show.show_name} </TableCell>
-            <TableCell className="centerText"> <span>
+     <TableCell onClick={() => onShowClick(show)} style={{ cursor: 'pointer', color: 'blue' }}>
+              {show.show_name}
+            </TableCell>            <TableCell className="centerText"> <span>
               <Button className="custom-button" style={buttonStyle} onClick={() => handleDecrementSeason(show.id, show.season)}>&lt;</Button>
               S:{show.season}
               <Button  className="custom-button" style={buttonStyle} onClick={() => handleIncrementSeason(show.id, show.season)}>&gt;</Button>
