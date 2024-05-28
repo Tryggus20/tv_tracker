@@ -10,10 +10,12 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  List,
+  ListItem,
+  ListItemText,
 } from "@mui/material";
 import axios from "axios";
 import { addShow } from "../../redux/actions/showActions";
-
 
 function ShowList() {
   const dispatch = useDispatch();
@@ -23,41 +25,68 @@ function ShowList() {
   useEffect(() => {
     dispatch({ type: "FETCH_SHOWS" });
   }, [dispatch]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [showDetails, setShowDetails] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]); 
+  const [selectedShow, setSelectedShow] = useState(null); 
+  const [genre, setGenre] = useState("");
+  const [notes, setNotes] = useState("");
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
+  const handleGenreChange = (event) => {
+    setGenre(event.target.value);
+  };
+
+  const handleNotesChange = (event) => {
+    setNotes(event.target.value);
+  };
 
   const handleSearchClick = async () => {
     try {
-      const response = await axios.get(`https://api.tvmaze.com/search/shows?q=${searchQuery}`);
+      const response = await axios.get(
+        `https://api.tvmaze.com/search/shows?q=${searchQuery}`
+      );
       if (response.data.length > 0) {
-        setShowDetails(response.data[0].show);
+        setSearchResults(response.data.slice(0, 5)); 
+        setSelectedShow(null); 
       } else {
-        alert('No show found with that name');
+        alert("No show found with that name");
       }
     } catch (error) {
       console.error("Error fetching show details:", error);
     }
   };
   const handleAddShowClick = () => {
-    if (showDetails) {
+    if (selectedShow) { 
       const showToSave = {
-        name: showDetails.name,
-        season: 1, 
-        episode: 1, 
-        genre: '',
-        notes: '', 
-        doneAiring: showDetails.status === 'Ended',
-        caughtUp: false, 
+        name: selectedShow.name, 
+        season: 1,
+        episode: 1,
+        genre: genre || selectedShow.genres.join(", "), 
+        notes: notes,
+        doneAiring: selectedShow.status === "Ended", 
+        caughtUp: false,
         lastUpdated: new Date().toISOString(),
       };
       dispatch(addShow(showToSave));
+      handleClearSearch()
     }
   };
-//  *********______*********_________*********______*********_________*********______*********_________
+  const handleClearSearch = () => {
+    setSearchResults([]); 
+    setSelectedShow(null); 
+    setSearchQuery("");
+    setGenre("");
+    setNotes("");
+  };
+  const handleSelectShow = (show) => { 
+    setSelectedShow(show); 
+    setGenre(''); 
+    setNotes(''); 
+  }; 
+// -----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____
+// _____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----
   return (
     <div>
       <br />
@@ -67,22 +96,60 @@ function ShowList() {
         onChange={handleSearchChange}
         size="small"
         variant="outlined"
-        sx={{ mr: 2 }} 
+        sx={{ mr: 2 }}
       />
       <Button variant="contained" color="secondary" onClick={handleSearchClick}>
         Search New Show
       </Button>
       <br />
-      {showDetails && (
+      {/* Display search results if no show is selected */}
+      {!selectedShow && searchResults.length > 0 && ( 
+        <List>
+        {searchResults.map((result) => {
+          const show = result.show;
+          const year = show.premiered ? new Date(show.premiered).getFullYear() : "N/A";
+          return (
+            <ListItem button onClick={() => handleSelectShow(show)} key={show.id}>
+              <ListItemText primary={`${show.name} (${year})`} />
+            </ListItem>
+          );
+        })}
+      </List>
+      )} 
+      {/* Display selected show details */}
+      {selectedShow && ( 
         <div>
-          <h3>{showDetails.name}</h3>
-          <p dangerouslySetInnerHTML={{ __html: showDetails.summary }} />
-          <img src={showDetails.image?.medium} alt={showDetails.name}  />
-          <br/>
-          <Button variant="contained" color="secondary" onClick={handleAddShowClick}>Add Show</Button>
-          <Button variant="contained" color="secondary" >Search Again</Button>
+          <h3>{selectedShow.name}</h3> 
+          <p dangerouslySetInnerHTML={{ __html: selectedShow.summary }} /> 
+          <img src={selectedShow.image?.medium} alt={selectedShow.name} /> 
+          <br />
+          <TextField
+            label="Add Notes"
+            value={notes}
+            onChange={handleNotesChange}
+            size="small"
+            variant="outlined"
+            sx={{ mr: 2 }}
+          />
+          <br />
+          <br />
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleAddShowClick}
+          >
+            Add Show
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleClearSearch}
+          >
+            Clear Search{" "}
+          </Button>
         </div>
       )}
+      {/* search results end here */}
       <hr></hr>
       <Paper>
         <Table className="table">
