@@ -1,7 +1,16 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ShowContainer from "../ShowContainer/ShowContainer";
-import {useTable} from 'react-table';
+import {
+  Button,
+  Paper,
+  TextField,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from "@mui/material";
 
 function ShowList() {
   const dispatch = useDispatch();
@@ -15,27 +24,38 @@ function ShowList() {
 
   return (
     <div>
-        <button>Save Changes</button>
-        <button>Add New Show</button>
-        <br/>
-        <hr></hr>
 
-      <table className="table">
-        <thead className="table-header">
-            <tr className="table-row">
-                <th className="table-header-left">Tv Show</th>
-                <th>Season</th>
-                <th>Episode</th>
-                <th>Genre</th>
-                <th>Notes</th>
-                <th>Is the show done airing?</th>
-                <th>Are you Caught up? </th>
-                <th className="table-header-right">Edit</th>
-            </tr>
-        </thead>
-        <ShowContainer shows={shows} />
-      </table>
-      <hr/>
+      <br />
+
+      <TextField
+        label="Show Name"
+        size="small"
+        variant="outlined"
+        sx={{ mr: 2 }} 
+      />
+      <Button variant="contained" color="secondary">
+        Add New Show
+      </Button>
+      <br />
+      <hr></hr>
+      <Paper>
+        <Table className="table">
+          <TableHead className="table-header">
+            <TableRow className="table-row">
+              <TableCell className="table-header-left">Tv Show</TableCell>
+              <TableCell>Season</TableCell>
+              <TableCell>Episode</TableCell>
+              <TableCell>Genre</TableCell>
+              <TableCell>Notes</TableCell>
+              <TableCell>Done airing?</TableCell>
+              <TableCell>Caught up? </TableCell>
+              <TableCell className="table-header-right">Edit</TableCell>
+            </TableRow>
+          </TableHead>
+          <ShowContainer shows={shows} />
+        </Table>
+      </Paper>
+      <hr />
       {/* <pre>;{JSON.stringify(shows, null, 2)}</pre> */}
     </div>
   );
