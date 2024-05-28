@@ -55,6 +55,9 @@ function ShowContainer({ shows }) {
         }
       };
 
+// TODO: Clicking on tv show name will pull up a quick synopsis and picture 
+// TODO: Clicking on the show episode will pull up a synopsis of the episode for that show
+
   return (
     <TableBody className="table-body">
       {Array.isArray(shows) && shows.length > 0 ? (
