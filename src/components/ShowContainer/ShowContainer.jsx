@@ -64,10 +64,13 @@ function ShowContainer({ shows, onShowClick, onEpisodeClick }) {
     }
   };
 
-  // TODO: Clicking on tv show name will pull up a quick synopsis and picture IN PROGRESS
-  // TODO: Clicking on the show episode will pull up a synopsis of the episode for that show IN PROGRESS
-  // TODO: ***** Update DB to allow synopsis of show to be saved.
-  // TODO: ****** also save tvmaze ID for each tv show to make episode synopsis searches easier
+  // TODO: ***** Update DB to have max season, episode, and a check back later date?
+  // TODO: make edit button work
+  // TODO: make caught up shows be on the bottom and greyed out
+  // TODO: add search feature
+  // TODO: add chippAi to answer questions about when the new season/episode may air (when to check back later)
+
+
   // -----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____
   // _____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----
   

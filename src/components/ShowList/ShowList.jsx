@@ -224,7 +224,7 @@ function ShowList() {
           }}
         >
           <h3>{episodeSynopsis._links.show.name}: {episodeSynopsis.name}</h3>
-          {episodeSynopsis.summary.replace(/(<p[^>]+?>|<p>|<\/p>)/img, "") || "No episode synopsis available."}
+          {episodeSynopsis.summary?.replace(/(<p[^>]+?>|<p>|<\/p>)/img, "") || "No episode synopsis available."}
         </div>
       )}
       <hr />
