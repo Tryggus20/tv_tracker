@@ -103,6 +103,8 @@ function ShowList() {
         `https://api.tvmaze.com/shows/${tvmaze_id}/episodebynumber?season=${season}&number=${episode}`
       );
       setEpisodeSynopsis(response.data);
+      console.log("episode synopsis", episodeSynopsis);
+    
     } catch (error) {
       console.error("Error fetching episode details:", error);
     }
@@ -221,7 +223,7 @@ function ShowList() {
             border: "1px solid #ccc",
           }}
         >
-          <h3>{episodeSynopsis.name}</h3>
+          <h3>{episodeSynopsis._links.show.name}: {episodeSynopsis.name}</h3>
           {episodeSynopsis.summary.replace(/(<p[^>]+?>|<p>|<\/p>)/img, "") || "No episode synopsis available."}
         </div>
       )}
