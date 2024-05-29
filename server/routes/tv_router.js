@@ -25,9 +25,12 @@ router.post("/", (req, res) => {
     doneAiring,
     caughtUp,
     lastUpdated,
+    tvmaze_id,
+    image_url,
+    show_synopsis,
   } = req.body;
-  const queryText = ` INSERT INTO "shows" (show_name, season, episode, genre, notes, series_ended, is_completed, last_updated ) 
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
+  const queryText = ` INSERT INTO "shows" (show_name, season, episode, genre, notes, series_ended, is_completed, last_updated, tvmaze_id, image_url, show_synopsis ) 
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`;
 
   const values = [
     name,
@@ -38,6 +41,9 @@ router.post("/", (req, res) => {
     doneAiring,
     caughtUp,
     lastUpdated,
+    tvmaze_id,
+    image_url,
+    show_synopsis,
   ];
 
   pool

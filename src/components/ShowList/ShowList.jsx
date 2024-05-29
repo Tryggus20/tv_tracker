@@ -30,15 +30,17 @@ function ShowList() {
   const [selectedShow, setSelectedShow] = useState(null);
   const [genre, setGenre] = useState("");
   const [notes, setNotes] = useState("");
-  const [synopsisShow, setSynopsisShow] = useState(null); // State for selected show synopsis
+  const [synopsisShow, setSynopsisShow] = useState(null);
   const [episodeSynopsis, setEpisodeSynopsis] = useState(null);
+  const [imageUrl, setImageUrl] = useState("")
+  const [tvmazeId, setTvmazeId] = useState("")
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
-  const handleGenreChange = (event) => {
-    setGenre(event.target.value);
-  };
+  // const handleGenreChange = (event) => {
+  //   setGenre(event.target.value);
+  // };
 
   const handleNotesChange = (event) => {
     setNotes(event.target.value);
@@ -74,7 +76,11 @@ function ShowList() {
         doneAiring: selectedShow.status === "Ended",
         caughtUp: false,
         lastUpdated: new Date().toISOString(),
+        tvmaze_id: selectedShow.id,
+        image_url: selectedShow.image?.medium,
+        show_synopsis: selectedShow.summary,
       };
+      console.log("show to save:", showToSave);
       dispatch(addShow(showToSave));
       handleClearSearch();
     }
@@ -90,6 +96,7 @@ function ShowList() {
     setSelectedShow(show);
     setGenre("");
     setNotes("");
+    console.log("show info", show);
   };
   const handleEpisodeClick = async (showId, season, episode) => {
     try {
@@ -177,6 +184,7 @@ function ShowList() {
         <Table className="table">
           <TableHead className="table-header">
             <TableRow className="table-row">
+              <TableCell> </TableCell>
               <TableCell className="table-header-left">Tv Show</TableCell>
               <TableCell>Season</TableCell>
               <TableCell>Episode</TableCell>
