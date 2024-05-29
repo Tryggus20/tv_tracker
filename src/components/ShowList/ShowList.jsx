@@ -212,7 +212,7 @@ function ShowList() {
           }}
         >
           <h3>{synopsisShow.show_name}</h3>
-          {synopsisShow.show_synopsis.replace(/(<p[^>]+?>|<p>|<\/p>)/img, "") || "No show synopsis available."}
+          {synopsisShow.show_synopsis?.replace(/(<p[^>]+?>|<p>|<\/p>)/img, "") || "No show synopsis available."}
         </div>
       )}
       {episodeSynopsis && (
