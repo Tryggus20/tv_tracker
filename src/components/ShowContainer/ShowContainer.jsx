@@ -68,6 +68,9 @@ function ShowContainer({ shows, onShowClick, onEpisodeClick }) {
   // TODO: Clicking on the show episode will pull up a synopsis of the episode for that show IN PROGRESS
   // TODO: ***** Update DB to allow synopsis of show to be saved.
   // TODO: ****** also save tvmaze ID for each tv show to make episode synopsis searches easier
+  // -----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____
+  // _____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----
+  
   return (
     <TableBody className="table-body">
       {Array.isArray(shows) && shows.length > 0 ? (
@@ -106,29 +109,33 @@ function ShowContainer({ shows, onShowClick, onEpisodeClick }) {
                 </Button>
               </span>
             </TableCell>
+            {/* here!!!!!!!!!! */}
             <TableCell className="centerText">
-              <div
-                onClick={() =>
-                  onEpisodeClick(show.tvmaze_id, show.season, show.episode)
-                }
-                style={{ cursor: "pointer", color: "blue", cellStyle }}
-              >
-                <Button
+            <Button
                   className="custom-button"
                   style={buttonStyle}
                   onClick={() => handleDecrementEpisode(show.id, show.episode)}
                 >
                   &lt;
                 </Button>
+              <div
+                onClick={() =>
+                  onEpisodeClick(show.tvmaze_id, show.season, show.episode)
+                }
+                style={{ cursor: "pointer", color: "blue", display: "inline" }}
+              >
+              
                 E:{show.episode}
-                <Button
+              </div>
+              <Button
                   className="custom-button"
                   style={buttonStyle}
                   onClick={() => handleIncrementEpisode(show.id, show.episode)}
                 >
                   &gt;
                 </Button>
-              </div>
+            {/* here!!!!!!!!!! */}
+
             </TableCell>
             <TableCell className="centerText">{show.genre}</TableCell>
             <TableCell className="centerText">{show.notes || "----"}</TableCell>

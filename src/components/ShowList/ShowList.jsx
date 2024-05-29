@@ -32,8 +32,7 @@ function ShowList() {
   const [notes, setNotes] = useState("");
   const [synopsisShow, setSynopsisShow] = useState(null);
   const [episodeSynopsis, setEpisodeSynopsis] = useState(null);
-  const [imageUrl, setImageUrl] = useState("")
-  const [tvmazeId, setTvmazeId] = useState("")
+
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -98,10 +97,10 @@ function ShowList() {
     setNotes("");
     console.log("show info", show);
   };
-  const handleEpisodeClick = async (showId, season, episode) => {
+  const handleEpisodeClick = async (tvmaze_id, season, episode) => {
     try {
       const response = await axios.get(
-        `https://api.tvmaze.com/shows/${showId}/episodebynumber?season=${season}&number=${episode}`
+        `https://api.tvmaze.com/shows/${tvmaze_id}/episodebynumber?season=${season}&number=${episode}`
       );
       setEpisodeSynopsis(response.data);
     } catch (error) {
@@ -211,7 +210,7 @@ function ShowList() {
           }}
         >
           <h3>{synopsisShow.show_name}</h3>
-          <p>{synopsisShow.synopsis || "No synopsis available."}</p>
+          {synopsisShow.show_synopsis || "No synopsis available."}
         </div>
       )}
       {episodeSynopsis && (
@@ -223,7 +222,7 @@ function ShowList() {
           }}
         >
           <h3>{episodeSynopsis.name}</h3>
-          <p>{episodeSynopsis.summary || "No synopsis available."}</p>
+          {episodeSynopsis.summary || "No synopsis available."}
         </div>
       )}
       <hr />
