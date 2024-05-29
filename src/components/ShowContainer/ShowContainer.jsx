@@ -64,13 +64,6 @@ function ShowContainer({ shows, onShowClick, onEpisodeClick }) {
     }
   };
 
-  // TODO: ***** Update DB to have max season, episode, and a check back later date?
-  // TODO: make edit button work
-  // TODO: make caught up shows be on the bottom and greyed out
-  // TODO: add search feature
-  // TODO: add chippAi to answer questions about when the new season/episode may air (when to check back later)
-
-
   // -----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____
   // _____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----
   
@@ -92,7 +85,7 @@ function ShowContainer({ shows, onShowClick, onEpisodeClick }) {
             >
               {show.show_name}
             </TableCell>{" "}
-            <TableCell className="centerText">
+            <TableCell className="centerText" style={{minWidth: "86px"}}>
               {" "}
               <span>
                 <Button
@@ -113,7 +106,7 @@ function ShowContainer({ shows, onShowClick, onEpisodeClick }) {
               </span>
             </TableCell>
             {/* here!!!!!!!!!! */}
-            <TableCell className="centerText">
+            <TableCell className="centerText" style={{minWidth: "86px"}}>
             <Button
                   className="custom-button"
                   style={buttonStyle}
@@ -151,6 +144,7 @@ function ShowContainer({ shows, onShowClick, onEpisodeClick }) {
             <TableCell>
               <Button>Edit</Button>
             </TableCell>
+            <TableCell></TableCell>
           </TableRow>
         ))
       ) : (

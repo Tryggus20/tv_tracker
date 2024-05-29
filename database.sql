@@ -1,4 +1,5 @@
 -- quick db schema. may make it more complex depending on features wanted
+-- TODO: update to current db schema
 CREATE TABLE shows (
     id SERIAL PRIMARY KEY,
     show_name VARCHAR(150),

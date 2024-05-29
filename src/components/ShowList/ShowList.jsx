@@ -194,6 +194,8 @@ function ShowList() {
               <TableCell>Done airing?</TableCell>
               <TableCell>Caught up? </TableCell>
               <TableCell className="table-header-right">Edit</TableCell>
+              <TableCell>Check Back Date</TableCell>
+
             </TableRow>
           </TableHead>
           <ShowContainer
