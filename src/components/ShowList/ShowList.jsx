@@ -210,7 +210,7 @@ function ShowList() {
           }}
         >
           <h3>{synopsisShow.show_name}</h3>
-          {synopsisShow.show_synopsis || "No synopsis available."}
+          {synopsisShow.show_synopsis.replace(/(<p[^>]+?>|<p>|<\/p>)/img, "") || "No show synopsis available."}
         </div>
       )}
       {episodeSynopsis && (
@@ -222,7 +222,7 @@ function ShowList() {
           }}
         >
           <h3>{episodeSynopsis.name}</h3>
-          {episodeSynopsis.summary || "No synopsis available."}
+          {episodeSynopsis.summary.replace(/(<p[^>]+?>|<p>|<\/p>)/img, "") || "No episode synopsis available."}
         </div>
       )}
       <hr />
