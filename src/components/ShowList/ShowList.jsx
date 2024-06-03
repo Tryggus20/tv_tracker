@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { addShow } from "../../redux/actions/showActions";
+import Fuse from "fuse.js";
 
 function ShowList() {
   const dispatch = useDispatch();
@@ -125,6 +126,11 @@ function ShowList() {
       <Button variant="contained" color="secondary" onClick={handleSearchClick}>
         Search New Show
       </Button>
+      <hr/>
+      <TextField label="Search Your Shows" size="small" variant="outlined" sx={{ mr: 2 }} /> 
+      <Button variant="contained" color="primary">
+      Clear
+      </Button>
       <br />
       {/* Display search results if no show is selected */}
       {!selectedShow && searchResults.length > 0 && (
@@ -149,6 +155,7 @@ function ShowList() {
       {/* Display selected show details */}
       {selectedShow && (
         <div>
+          <p style={{fontSize: "10px"}}>Info from tvmaze.com</p>
           <h3>{selectedShow.name}</h3>
           <p dangerouslySetInnerHTML={{ __html: selectedShow.summary }} />
           <img src={selectedShow.image?.medium} alt={selectedShow.name} />
@@ -191,10 +198,10 @@ function ShowList() {
               <TableCell>Episode</TableCell>
               <TableCell>Genre</TableCell>
               <TableCell>Notes</TableCell>
-              <TableCell>Done airing?</TableCell>
-              <TableCell>Caught up? </TableCell>
+              <TableCell>Done Airing?</TableCell>
+              <TableCell>Caught Up? </TableCell>
               <TableCell className="table-header-right">Edit</TableCell>
-              <TableCell>Check Back Date</TableCell>
+              <TableCell>Release Date</TableCell>
 
             </TableRow>
           </TableHead>

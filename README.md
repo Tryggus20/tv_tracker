@@ -7,7 +7,7 @@ TODO: make edit button function (for notes, delete, and check_back_date)
 
 TODO: make caught up shows be on the bottom and greyed out
 
-TODO: add search feature for Tv shows table
+TODO: add search feature for Tv shows table (Fuse.js)
 
 TODO: paginate tv shows at 10?
 
