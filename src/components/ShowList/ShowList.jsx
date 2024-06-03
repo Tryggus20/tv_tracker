@@ -13,10 +13,12 @@ import {
   List,
   ListItem,
   ListItemText,
+  TablePagination,
 } from "@mui/material";
 import axios from "axios";
 import { addShow } from "../../redux/actions/showActions";
 import Fuse from "fuse.js";
+import usePagination from "../../hooks/usePagination";
 
 function ShowList() {
   const dispatch = useDispatch();
@@ -26,6 +28,7 @@ function ShowList() {
   useEffect(() => {
     dispatch({ type: "FETCH_SHOWS" });
   }, [dispatch]);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedShow, setSelectedShow] = useState(null);
@@ -34,13 +37,28 @@ function ShowList() {
   const [synopsisShow, setSynopsisShow] = useState(null);
   const [episodeSynopsis, setEpisodeSynopsis] = useState(null);
 
+  // Fuzzy search with Fuse.js
+  const fuse = new Fuse(shows, {
+    keys: ["show_name", "genre", "notes"],
+    threshold: 0.3, // Adjust the threshold as needed
+  });
+
+  const filteredShows = searchQuery
+    ? fuse.search(searchQuery).map((result) => result.item)
+    : shows;
+
+  // Use the custom pagination hook
+  const {
+    currentPage,
+    rowsPerPage,
+    paginatedData,
+    handleChangePage,
+    handleChangeRowsPerPage,
+  } = usePagination(filteredShows, 10); // Default to 10 rows per page
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
-  // const handleGenreChange = (event) => {
-  //   setGenre(event.target.value);
-  // };
 
   const handleNotesChange = (event) => {
     setNotes(event.target.value);
@@ -65,6 +83,7 @@ function ShowList() {
       console.error("Error fetching show details:", error);
     }
   };
+
   const handleAddShowClick = () => {
     if (selectedShow) {
       const showToSave = {
@@ -85,6 +104,7 @@ function ShowList() {
       handleClearSearch();
     }
   };
+
   const handleClearSearch = () => {
     setSearchResults([]);
     setSelectedShow(null);
@@ -92,12 +112,14 @@ function ShowList() {
     setGenre("");
     setNotes("");
   };
+
   const handleSelectShow = (show) => {
     setSelectedShow(show);
     setGenre("");
     setNotes("");
     console.log("show info", show);
   };
+
   const handleEpisodeClick = async (tvmaze_id, season, episode) => {
     try {
       const response = await axios.get(
@@ -105,13 +127,11 @@ function ShowList() {
       );
       setEpisodeSynopsis(response.data);
       console.log("episode synopsis", episodeSynopsis);
-    
     } catch (error) {
       console.error("Error fetching episode details:", error);
     }
   };
-  // -----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____
-  // _____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----_____-----
+
   return (
     <div>
       <br />
@@ -127,12 +147,22 @@ function ShowList() {
         Search New Show
       </Button>
       <hr/>
-      <TextField label="Search Your Shows" size="small" variant="outlined" sx={{ mr: 2 }} /> 
-      <Button variant="contained" color="primary">
-      Clear
+      <TextField
+        label="Search Your Shows"
+        value={searchQuery}
+        onChange={handleSearchChange}
+        size="small"
+        variant="outlined"
+        sx={{ mr: 2 }}
+      /> 
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => setSearchQuery("")}
+      >
+        Clear
       </Button>
       <br />
-      {/* Display search results if no show is selected */}
       {!selectedShow && searchResults.length > 0 && (
         <List>
           {searchResults.map((result) => {
@@ -152,10 +182,9 @@ function ShowList() {
           })}
         </List>
       )}
-      {/* Display selected show details */}
       {selectedShow && (
         <div>
-          <p style={{fontSize: "10px"}}>Info from tvmaze.com</p>
+          <p style={{ fontSize: "10px" }}>Info from tvmaze.com</p>
           <h3>{selectedShow.name}</h3>
           <p dangerouslySetInnerHTML={{ __html: selectedShow.summary }} />
           <img src={selectedShow.image?.medium} alt={selectedShow.name} />
@@ -186,7 +215,6 @@ function ShowList() {
           </Button>
         </div>
       )}
-      {/* search results end here */}
       <hr></hr>
       <Paper>
         <Table className="table">
@@ -202,15 +230,23 @@ function ShowList() {
               <TableCell>Caught Up? </TableCell>
               <TableCell className="table-header-right">Edit</TableCell>
               <TableCell>Release Date</TableCell>
-
             </TableRow>
           </TableHead>
           <ShowContainer
-            shows={shows}
+            shows={paginatedData}
             onShowClick={handleShowClick}
             onEpisodeClick={handleEpisodeClick}
           />
         </Table>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={filteredShows.length}
+          rowsPerPage={rowsPerPage}
+          page={currentPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </Paper>
       {synopsisShow && (
         <div
@@ -221,7 +257,8 @@ function ShowList() {
           }}
         >
           <h3>{synopsisShow.show_name}</h3>
-          {synopsisShow.show_synopsis?.replace(/(<p[^>]+?>|<p>|<\/p>)/img, "") || "No show synopsis available."}
+          {synopsisShow.show_synopsis?.replace(/(<p[^>]+?>|<p>|<\/p>)/img, "") ||
+            "No show synopsis available."}
         </div>
       )}
       {episodeSynopsis && (
@@ -233,7 +270,8 @@ function ShowList() {
           }}
         >
           <h3>{episodeSynopsis._links.show.name}: {episodeSynopsis.name}</h3>
-          {episodeSynopsis.summary?.replace(/(<p[^>]+?>|<p>|<\/p>)/img, "") || "No episode synopsis available."}
+          {episodeSynopsis.summary?.replace(/(<p[^>]+?>|<p>|<\/p>)/img, "") ||
+            "No episode synopsis available."}
         </div>
       )}
       <hr />
