@@ -135,8 +135,9 @@ function ShowList() {
   return (
     <div>
       <br />
+      {/* It is a feature and not a bug having both text fields being searchQuery */}
       <TextField
-        label="Show Name"
+        label="Search Shows"
         value={searchQuery}
         onChange={handleSearchChange}
         size="small"
@@ -144,25 +145,17 @@ function ShowList() {
         sx={{ mr: 2 }}
       />
       <Button variant="contained" color="secondary" onClick={handleSearchClick}>
-        Search New Show
+        Add New Show
       </Button>
-      <hr/>
-      <TextField
-        label="Search Your Shows"
-        value={searchQuery}
-        onChange={handleSearchChange}
-        size="small"
-        variant="outlined"
-        sx={{ mr: 2 }}
-      /> 
       <Button
         variant="contained"
         color="primary"
+
         onClick={() => setSearchQuery("")}
       >
         Clear
       </Button>
-      <br />
+    
       {!selectedShow && searchResults.length > 0 && (
         <List>
           {searchResults.map((result) => {
