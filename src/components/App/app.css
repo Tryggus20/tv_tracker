@@ -11,6 +11,12 @@
     
 }
 
+.buy-button-container {
+  position: 'fixed' !important;
+  top: '200px' !important;
+  right: '2000px' !important; 
+}
+
 .table-header th {
     border: 1px solid black;
     padding: 8px;

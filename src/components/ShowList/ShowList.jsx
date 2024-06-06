@@ -145,7 +145,7 @@ function ShowList() {
         sx={{ mr: 2 }}
       />
       <Button variant="contained" color="secondary" onClick={handleSearchClick}>
-        Add New Show
+        Search
       </Button>
       <Button
         variant="contained"
@@ -201,7 +201,7 @@ function ShowList() {
           </Button>
           <Button
             variant="contained"
-            color="secondary"
+            color="primary"
             onClick={handleClearSearch}
           >
             Clear Search{" "}
