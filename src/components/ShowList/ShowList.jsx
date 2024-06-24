@@ -9,24 +9,25 @@ import {
   TableHead,
   TableRow,
   TableCell,
-  TableBody,
+  TablePagination,
   List,
   ListItem,
   ListItemText,
-  TablePagination,
 } from "@mui/material";
 import axios from "axios";
-import { addShow } from "../../redux/actions/showActions";
+import { addShow, fetchShows } from "../../redux/actions/showActions";
 import Fuse from "fuse.js";
 import usePagination from "../../hooks/usePagination";
+import { useAuth } from "../../contexts/authContext";
 
 function ShowList() {
+  
   const dispatch = useDispatch();
-
+  const { currentUser } = useAuth(); // Get current user from context
   let { shows } = useSelector((store) => store);
-
+// console.log("current user email in showList", currentUser.email); //correct email
   useEffect(() => {
-    dispatch({ type: "FETCH_SHOWS" });
+    dispatch(fetchShows());
   }, [dispatch]);
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -85,7 +86,7 @@ function ShowList() {
   };
 
   const handleAddShowClick = () => {
-    if (selectedShow) {
+    if (selectedShow && currentUser) {
       const showToSave = {
         name: selectedShow.name,
         season: 1,
@@ -98,6 +99,7 @@ function ShowList() {
         tvmaze_id: selectedShow.id,
         image_url: selectedShow.image?.medium,
         show_synopsis: selectedShow.summary,
+        user_email: currentUser.email
       };
       console.log("show to save:", showToSave);
       dispatch(addShow(showToSave));
@@ -135,7 +137,6 @@ function ShowList() {
   return (
     <div>
       <br />
-      {/* It is a feature and not a bug having both text fields being searchQuery */}
       <TextField
         label="Search Shows"
         value={searchQuery}
@@ -150,7 +151,6 @@ function ShowList() {
       <Button
         variant="contained"
         color="primary"
-
         onClick={() => setSearchQuery("")}
       >
         Clear

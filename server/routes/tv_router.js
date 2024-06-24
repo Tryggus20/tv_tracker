@@ -4,15 +4,18 @@ const pool = require("../modules/pool");
 
 // GET ROUTE
 router.get("/", (req, res) => {
-  const queryText = 'SELECT * FROM "shows" ORDER BY show_name ASC';
+  const userEmail = req.headers['user-email']; // TODO: Make sure this is set correctly
+  const queryText = 'SELECT * FROM "shows" WHERE "user_email" = $1 ORDER BY show_name ASC';
+
   pool
-    .query(queryText)
+    .query(queryText, [userEmail])
     .then((result) => res.send(result.rows))
     .catch((err) => {
-      console.error("Error in Get all shows", err);
+      console.error("Error in Get user shows", err);
       res.sendStatus(500);
     });
 });
+
 
 // POST ROUTE
 router.post("/", (req, res) => {
@@ -28,9 +31,10 @@ router.post("/", (req, res) => {
     tvmaze_id,
     image_url,
     show_synopsis,
+    user_email,
   } = req.body;
-  const queryText = ` INSERT INTO "shows" (show_name, season, episode, genre, notes, series_ended, is_completed, last_updated, tvmaze_id, image_url, show_synopsis ) 
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`;
+  const queryText = ` INSERT INTO "shows" (show_name, season, episode, genre, notes, series_ended, is_completed, last_updated, tvmaze_id, image_url, show_synopsis, user_email ) 
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`;
 
   const values = [
     name,
@@ -44,6 +48,7 @@ router.post("/", (req, res) => {
     tvmaze_id,
     image_url,
     show_synopsis,
+    user_email,
   ];
 
   pool
