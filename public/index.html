@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link rel="stylesheet" href="../src/index.css" />
+
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -9,10 +11,13 @@
     <meta name="theme-color" content="#000000" />
     <link rel="icon" href="./fav.icon.png" />
     <title>TV Tracker</title>
-    <div style="position: fixed; top: 20px; right: 20px;">
-      <script async src="https://js.stripe.com/v3/buy-button.js"></script>
-
-      <stripe-buy-button
+    <div style="position: fixed; top: 20px; right: 20px">
+      <script
+        class="stripe-button"
+        async
+        src="https://js.stripe.com/v3/buy-button.js" >
+    </script>
+        <stripe-buy-button
         buy-button-id="buy_btn_1POii902E5Z8efY54VK6Ttl2"
         publishable-key="pk_test_51POiT602E5Z8efY5ssECm2dRvkMZy2t4F8AS1P3Sxqdx8EByYKaAL4qdsqQRVMYu3F4VUtGGvOipZUMDfiwNvsyj00DEYk5Qrj"
       >
