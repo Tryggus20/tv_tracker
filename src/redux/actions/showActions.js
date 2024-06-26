@@ -44,7 +44,6 @@ export const fetchShows = (userEmail) => async (dispatch) => {
       }
     });
 
-    console.log("showAction", response);
     console.log("setting shows in showActions");
     dispatch({ type: 'SET_SHOWS', payload: response.data });
   } catch (error) {
