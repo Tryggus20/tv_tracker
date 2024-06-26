@@ -47,6 +47,8 @@ function App() {
   return (
     <AuthProvider>
       <AppContent />
+      <iframe src="https://tvtrackerbot-6854.chipp.ai" height="550px" width="80%" frameborder="0" title="Tv Tracker bot"/>
+
     </AuthProvider>
   );
 }
