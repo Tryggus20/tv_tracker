@@ -1,5 +1,4 @@
 -- quick db schema. may make it more complex depending on features wanted
--- TODO: update to current db schema
 CREATE TABLE shows (
     id SERIAL PRIMARY KEY,
     show_name VARCHAR(150),
@@ -9,8 +8,10 @@ CREATE TABLE shows (
     notes VARCHAR(1000),
     series_ended BOOLEAN,
     is_completed BOOLEAN,
-    last_updated TIMESTAMP
+    last_updated TIMESTAMP,
+    tvmaze_id VARCHAR(1000),
+    image_url VARCHAR(1000),
+    show_synopsis VARCHAR(2000),
+    release_date VARCHAR(100),
+    user_email VARCHAR(255)
 );
-
-INSERT INTO shows (show_name, season, episode, genre, notes, series_ended, is_completed, last_updated)
-VALUES ('Game of Thrones', 1, 1, 'fantasy', NULL, true, false, NOW());

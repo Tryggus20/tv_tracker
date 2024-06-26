@@ -21,6 +21,7 @@
     "cookie-session": "^2.0.0",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
+    "firebase": "^10.12.2",
     "fuse.js": "^7.0.0",
     "lucide-react": "^0.292.0",
     "mui": "^0.0.1",
