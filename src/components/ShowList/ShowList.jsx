@@ -19,6 +19,7 @@ import { addShow, fetchShows } from "../../redux/actions/showActions";
 import Fuse from "fuse.js";
 import usePagination from "../../hooks/usePagination";
 import { useAuth } from "../../contexts/authContext";
+import { LucideBarChartHorizontalBig } from "lucide-react";
 
 function ShowList() {
   const dispatch = useDispatch();
@@ -27,6 +28,8 @@ function ShowList() {
 
   useEffect(() => {
     dispatch(fetchShows());
+    console.log("fetching shows");
+    console.log(shows, {shows})
   }, [dispatch]);
 
   const [searchQuery, setSearchQuery] = useState("");

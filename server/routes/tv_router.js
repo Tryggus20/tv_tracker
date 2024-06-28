@@ -16,6 +16,10 @@ const pool = require("../modules/pool");
 //     });
 // });
 
+// test GET
+router.get('/', (req, res) => {
+  res.json({ message: 'TV API is working' });
+});
 
 // TODO: REMOVE TEST GET TO MAKE SURE DEPLOYED DB IS WORKING
 router.get("/", (req, res) => {
@@ -23,7 +27,7 @@ router.get("/", (req, res) => {
   const queryText = 'SELECT * FROM "shows" ORDER BY show_name ASC';
 
   pool
-    .query(queryText, [userEmail])
+    .query(queryText)
     .then((result) => res.send(result.rows))
     .catch((err) => {
       console.error("Error in Get user shows", err);
