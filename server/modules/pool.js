@@ -1,22 +1,29 @@
-const pg = require("pg");
+const pg = require('pg');
 let pool;
 
 if (process.env.DATABASE_URL) {
+  // This is for Heroku or other environments where DATABASE_URL is provided
   pool = new pg.Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
       rejectUnauthorized: false,
     },
   });
-}
-// When we're running this app on our own computer
-// we'll connect to the postgres database that is
-// also running on our computer (localhost)
-else {
+} else if (process.env.GCLOUD_SQL_CONNECTION_NAME) {
+  // This is for Google Cloud SQL
   pool = new pg.Pool({
-    host: "localhost",
+    user: process.env.DB_USER,
+    host: `/cloudsql/${process.env.GCLOUD_SQL_CONNECTION_NAME}`, // Cloud SQL instance connection name
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: 5432, // Default PostgreSQL port
+  });
+} else {
+  // This is for local development
+  pool = new pg.Pool({
+    host: 'localhost',
     port: 5432,
-    database: "tv_tracker",
+    database: 'tv_tracker',
   });
 }
 

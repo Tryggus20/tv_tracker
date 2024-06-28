@@ -21,11 +21,10 @@ import usePagination from "../../hooks/usePagination";
 import { useAuth } from "../../contexts/authContext";
 
 function ShowList() {
-  
   const dispatch = useDispatch();
   const { currentUser } = useAuth(); // Get current user from context
   let { shows } = useSelector((store) => store);
-// console.log("current user email in showList", currentUser.email); //correct email
+
   useEffect(() => {
     dispatch(fetchShows());
   }, [dispatch]);
@@ -39,12 +38,17 @@ function ShowList() {
   const [episodeSynopsis, setEpisodeSynopsis] = useState(null);
 
   // Fuzzy search with Fuse.js
-  const fuse = new Fuse(shows, {
-    keys: ["show_name", "genre", "notes"],
-    threshold: 0.3, // Adjust the threshold as needed
-  });
+  let fuse;
+  if (Array.isArray(shows)) {
+    fuse = new Fuse(shows, {
+      keys: ["show_name", "genre", "notes"],
+      threshold: 0.3, // Adjust the threshold as needed
+    });
+  } else {
+    console.error('Expected an array but received:', shows);
+  }
 
-  const filteredShows = searchQuery
+  const filteredShows = searchQuery && fuse
     ? fuse.search(searchQuery).map((result) => result.item)
     : shows;
 
