@@ -16,9 +16,9 @@ app.use("/api/tv", tvRouter);
 app.use(express.static("build"));
 
 // Catch-all handler for any requests that don't match API routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
 
 /** Listen * */
 app.listen(PORT, () => {
