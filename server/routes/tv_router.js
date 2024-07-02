@@ -4,7 +4,7 @@ const pool = require("../modules/pool");
 
 // GET ROUTE
 router.get("/", (req, res) => {
-  const userEmail = req.headers['user-email']; // TODO: Make sure this is set correctly
+  const userEmail = req.headers['user-email']; 
   const queryText = 'SELECT * FROM "shows" WHERE "user_email" = $1 ORDER BY show_name ASC';
 
   pool
@@ -15,6 +15,21 @@ router.get("/", (req, res) => {
       res.sendStatus(500);
     });
 });
+
+// TODO: REMOVE TEST GET TO MAKE SURE DEPLOYED DB IS WORKING
+// router.get("/", (req, res) => {
+//   const userEmail = req.headers['user-email']
+//   console.log(userEmail);;
+//   const queryText = 'SELECT * FROM "shows" ORDER BY show_name ASC';
+
+//   pool
+//     .query(queryText)
+//     .then((result) => res.send(result.rows))
+//     .catch((err) => {
+//       console.error("Error in Get user shows", err);
+//       res.sendStatus(500);
+//     });
+// });
 
 
 // POST ROUTE
