@@ -17,13 +17,14 @@ const pool = require("../modules/pool");
 // });
 
 // test GET
-router.get('/', (req, res) => {
-  res.json({ message: 'TV API is working' });
-});
+// router.get('/', (req, res) => {
+//   res.json({ message: 'TV API is working' });
+// });
 
 // TODO: REMOVE TEST GET TO MAKE SURE DEPLOYED DB IS WORKING
 router.get("/", (req, res) => {
-  const userEmail = req.headers['user-email'];
+  const userEmail = req.headers['user-email']
+  console.log(userEmail);;
   const queryText = 'SELECT * FROM "shows" ORDER BY show_name ASC';
 
   pool
