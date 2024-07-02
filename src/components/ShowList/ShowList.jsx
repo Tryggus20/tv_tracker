@@ -137,6 +137,7 @@ function ShowList() {
   return (
     <div>
       <br />
+      
       <TextField
         label="Search Shows"
         value={searchQuery}
