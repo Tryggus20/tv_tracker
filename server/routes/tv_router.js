@@ -3,38 +3,33 @@ const router = express.Router();
 const pool = require("../modules/pool");
 
 // GET ROUTE
-// router.get("/", (req, res) => {
-//   const userEmail = req.headers['user-email']; 
-//   const queryText = 'SELECT * FROM "shows" WHERE "user_email" = $1 ORDER BY show_name ASC';
-
-//   pool
-//     .query(queryText, [userEmail])
-//     .then((result) => res.send(result.rows))
-//     .catch((err) => {
-//       console.error("Error in Get user shows", err);
-//       res.sendStatus(500);
-//     });
-// });
-
-// test GET
-// router.get('/', (req, res) => {
-//   res.json({ message: 'TV API is working' });
-// });
-
-// TODO: REMOVE TEST GET TO MAKE SURE DEPLOYED DB IS WORKING
 router.get("/", (req, res) => {
-  const userEmail = req.headers['user-email']
-  console.log(userEmail);;
-  const queryText = 'SELECT * FROM "shows" ORDER BY show_name ASC';
+  const userEmail = req.headers['user-email']; 
+  const queryText = 'SELECT * FROM "shows" WHERE "user_email" = $1 ORDER BY show_name ASC';
 
   pool
-    .query(queryText)
+    .query(queryText, [userEmail])
     .then((result) => res.send(result.rows))
     .catch((err) => {
       console.error("Error in Get user shows", err);
       res.sendStatus(500);
     });
 });
+
+// TODO: REMOVE TEST GET TO MAKE SURE DEPLOYED DB IS WORKING
+// router.get("/", (req, res) => {
+//   const userEmail = req.headers['user-email']
+//   console.log(userEmail);;
+//   const queryText = 'SELECT * FROM "shows" ORDER BY show_name ASC';
+
+//   pool
+//     .query(queryText)
+//     .then((result) => res.send(result.rows))
+//     .catch((err) => {
+//       console.error("Error in Get user shows", err);
+//       res.sendStatus(500);
+//     });
+// });
 
 
 // POST ROUTE
