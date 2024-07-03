@@ -1,0 +1,18 @@
+# Define the Show type corresponding to the database schema
+type Show @table(key: "id"){
+    id: String!
+    showName: String
+    season: Int
+    episode: Int
+    genre: String
+    notes: String
+    seriesEnded: Boolean
+    isCompleted: Boolean
+    lastUpdated: String
+    tvmazeId: String
+    imageUrl: String
+    showSynopsis: String
+    releaseDate: String
+    userEmail: String
+}
+

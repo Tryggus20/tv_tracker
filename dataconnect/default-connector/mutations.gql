@@ -1,0 +1,24 @@
+#  mutation addShow(
+#         showName: String!,
+#         season: Int,
+#         episode: Int,
+#         genre: String,
+#         notes: String,
+#         seriesEnded: Boolean,
+#         isCompleted: Boolean,
+#         lastUpdated: String,
+#         tvmazeId: String,
+#         imageUrl: String,
+#         showSynopsis: String,
+#         releaseDate: String,
+#         userEmail: String!
+#     ): Show
+
+#     updateShow(
+#         id: Int!,
+#         season: Int,
+#         episode: Int
+#     ): Show
+
+#     deleteShow(id: Int!): Show
+
