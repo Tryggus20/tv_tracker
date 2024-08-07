@@ -1,5 +1,15 @@
 {
   "projects": {
-    "default": "tvtracker-b1047"
+    "default": "tvtracker-b1047",
+    "postgres": {
+      "localConnectionString": "postgresql://tv_tracker_owner:1AhoRkzYZd5C@ep-misty-butterfly-a5lhojzf.us-east-2.aws.neon.tech/tv_tracker?sslmode=require"
+    }
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {
+    "postgres": {
+      "localConnectionString": "postgresql://tv_tracker_owner:1AhoRkzYZd5C@ep-misty-butterfly-a5lhojzf.us-east-2.aws.neon.tech/tv_tracker?sslmode=require"
+    }
   }
 }

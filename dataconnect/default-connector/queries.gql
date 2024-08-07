@@ -1,0 +1,6 @@
+# Queries to fetch data
+ query {
+    shows {
+        id showName season episode
+    }
+}
