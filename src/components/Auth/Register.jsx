@@ -36,18 +36,18 @@ const Register = () => {
   };
 
   return (
-    <div>
+    <div className="login">
       <main>
         {userLoggedIn && <Link to={"/home"} replace={true} />}
         <div>
           <div>
-            <div>
+            <div className="forum-container">
               <h3>Create Account</h3>
             </div>
           </div>
           <form onSubmit={onSubmit} className="space-y-4">
             <div>
-              <label className="text-sm text-gray-600 font-bold">Email</label>
+              <label className="text-sm text-gray-600 font-bold">Email: </label>
               <input
                 type="email"
                 autoComplete="email"
@@ -56,12 +56,12 @@ const Register = () => {
                 onChange={(e) => {
                   setEmail(e.target.value);
                 }}
-                className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg transition duration-300"
+                className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg transition duration-300 form-input"
               />
             </div>
 
             <div>
-              <label className="text-sm text-gray-600 font-bold">Password</label>
+              <label className="text-sm text-gray-600 font-bold">Password: </label>
               <input
                 disabled={isRegistering}
                 type="password"
@@ -71,12 +71,12 @@ const Register = () => {
                 onChange={(e) => {
                   setPassword(e.target.value);
                 }}
-                className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg transition duration-300"
+                className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg transition duration-300 form-input"
               />
             </div>
 
             <div>
-              <label className="text-sm text-gray-600 font-bold">Confirm Password</label>
+              <label className="text-sm text-gray-600 font-bold">Confirm Password: </label>
               <input
                 disabled={isRegistering}
                 type="password"
@@ -86,7 +86,7 @@ const Register = () => {
                 onChange={(e) => {
                   setConfirmPassword(e.target.value);
                 }}
-                className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg transition duration-300"
+                className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg transition duration-300 form-input"
               />
             </div>
 

@@ -45,19 +45,19 @@ const Login = () => {
 //   };
 
   return (
-    <div>
+    <div className='login'>
       {userLoggedIn && <Link to="/home" replace={true} />}
       <main>
         <div>
           <div>
-            <div>
-              <h3>Welcome Back</h3>
+            <div className='form-container'>
+              <h3 className='center'>Welcome Back</h3>
             </div>
           </div>
           <form onSubmit={onSubmit}>
             <div>
-              <label>Email</label>
-              <input
+              <label>Email: </label>
+              <input className='form-input'
                 type="email"
                 required
                 value={email}
@@ -65,8 +65,8 @@ const Login = () => {
               />
             </div>
             <div>
-              <label>Password</label>
-              <input
+              <label>Password: </label>
+              <input className='form-input'
                 type="password"
                 required
                 value={password}

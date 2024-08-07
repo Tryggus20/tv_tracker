@@ -102,6 +102,7 @@ router.post("/", (req, res) => {
 router.put("/:id", async (req, res) => {
     const { id } = req.params;
     const { season, episode } = req.body;
+    // TODO: if you update season, resets episode to 1?
     try {
       if (season !== undefined) {
         await pool.query('UPDATE shows SET season = $1 WHERE id = $2', [season, id]);

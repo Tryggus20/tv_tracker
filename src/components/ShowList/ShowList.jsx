@@ -13,13 +13,16 @@ import {
   List,
   ListItem,
   ListItemText,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import axios from "axios";
 import { addShow, fetchShows } from "../../redux/actions/showActions";
 import Fuse from "fuse.js";
 import usePagination from "../../hooks/usePagination";
 import { useAuth } from "../../contexts/authContext";
-import { LucideBarChartHorizontalBig } from "lucide-react";
 
 function ShowList() {
   const dispatch = useDispatch();
@@ -39,6 +42,8 @@ function ShowList() {
   const [notes, setNotes] = useState("");
   const [synopsisShow, setSynopsisShow] = useState(null);
   const [episodeSynopsis, setEpisodeSynopsis] = useState(null);
+  const [openSynopsisModal, setOpenSynopsisModal] = useState(false);
+  const [openEpisodeModal, setOpenEpisodeModal] = useState(false);
 
   // Fuzzy search with Fuse.js
   let fuse;
@@ -74,6 +79,12 @@ function ShowList() {
 
   const handleShowClick = (show) => {
     setSynopsisShow(show);
+    setOpenSynopsisModal(true);
+  };
+
+  const handleCloseSynopsisModal = () => {
+    setOpenSynopsisModal(false);
+    setSynopsisShow(null);
   };
 
   const handleSearchClick = async () => {
@@ -135,16 +146,20 @@ function ShowList() {
         `https://api.tvmaze.com/shows/${tvmaze_id}/episodebynumber?season=${season}&number=${episode}`
       );
       setEpisodeSynopsis(response.data);
-      console.log("episode synopsis", episodeSynopsis);
+      setOpenEpisodeModal(true);
     } catch (error) {
       console.error("Error fetching episode details:", error);
     }
   };
 
+  const handleCloseEpisodeModal = () => {
+    setOpenEpisodeModal(false);
+    setEpisodeSynopsis(null);
+  };
+
   return (
     <div>
       <br />
-      
       <TextField
         label="Search Shows"
         value={searchQuery}
@@ -221,7 +236,7 @@ function ShowList() {
         <Table className="table">
           <TableHead className="table-header">
             <TableRow className="table-row">
-              <TableCell> </TableCell>
+              <TableCell>Image </TableCell>
               <TableCell className="table-header-left">Tv Show</TableCell>
               <TableCell>Season</TableCell>
               <TableCell>Episode</TableCell>
@@ -249,32 +264,42 @@ function ShowList() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      {synopsisShow && (
-        <div
-          style={{
-            marginTop: "20px",
-            padding: "10px",
-            border: "1px solid #ccc",
-          }}
-        >
-          <h3>{synopsisShow.show_name}</h3>
-          {synopsisShow.show_synopsis?.replace(/(<p[^>]+?>|<p>|<\/p>)/img, "") ||
+      <Dialog
+        open={openSynopsisModal}
+        onClose={handleCloseSynopsisModal}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>{synopsisShow?.show_name}</DialogTitle>
+        <DialogContent>
+          {synopsisShow?.show_synopsis?.replace(/(<p[^>]+?>|<p>|<\/p>)/img, "") ||
             "No show synopsis available."}
-        </div>
-      )}
-      {episodeSynopsis && (
-        <div
-          style={{
-            marginTop: "20px",
-            padding: "10px",
-            border: "1px solid #ccc",
-          }}
-        >
-          <h3>{episodeSynopsis._links.show.name}: {episodeSynopsis.name}</h3>
-          {episodeSynopsis.summary?.replace(/(<p[^>]+?>|<p>|<\/p>)/img, "") ||
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseSynopsisModal} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openEpisodeModal}
+        onClose={handleCloseEpisodeModal}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>
+          {episodeSynopsis?._links.show.name}: {episodeSynopsis?.name}
+        </DialogTitle>
+        <DialogContent>
+          {episodeSynopsis?.summary?.replace(/(<p[^>]+?>|<p>|<\/p>)/img, "") ||
             "No episode synopsis available."}
-        </div>
-      )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseEpisodeModal} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
       <hr />
     </div>
   );
