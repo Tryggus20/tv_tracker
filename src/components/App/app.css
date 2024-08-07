@@ -9,8 +9,49 @@
   width: 1/2 !important;
 }
 
+.stripe-button-wrapper {
+  /* Ensures the wrapper is positioned as specified */
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}
 
+.stripe-button-wrapper stripe-buy-button {
+  width: 50px !important; /* Set the desired width */
+  max-width: 75%; /* Ensure it doesn't overflow the container */
+}
 
+.form-container {
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.form-input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.center {
+  align-self: center;
+  text-align: center;
+}
+
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 10px;
+}
 
 .table {
     width: 100%;
