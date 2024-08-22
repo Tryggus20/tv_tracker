@@ -1,6 +1,9 @@
 .centerText {
     text-align: center !important;
 }
+body {
+  background-color: #d3e0ea;
+}
 
 .buy-button-container,
 .buy-button-container>span {

@@ -45,7 +45,7 @@ export const fetchShows = (userEmail) => async (dispatch) => {
     });
     console.log("actions email:", userEmail);
     console.log("setting shows in showActions");
-    console.log("showactions data:", response.data);
+    console.log("show actions data:", response.data);
     dispatch({ type: 'SET_SHOWS', payload: response.data });
   } catch (error) {
     console.error('Error fetching shows:', userEmail, error);

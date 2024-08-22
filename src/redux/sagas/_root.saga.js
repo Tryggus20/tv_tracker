@@ -6,6 +6,7 @@ function* watcherSaga() {
   yield takeEvery('FETCH_SHOWS', fetchAllShows);
   yield takeEvery('ADD_SHOW', addShowSaga);
   yield takeEvery('UPDATE_SHOW', updateShowSaga); // Add new saga for updating show
+  yield takeEvery('EDIT_SHOW', saveEditSaga);
 }
 
 function* fetchAllShows() {
@@ -37,6 +38,18 @@ function* updateShowSaga(action) {
     yield put({ type: 'FETCH_SHOWS' }); // Fetch updated shows after updating
   } catch (err) {
     console.log('error in updateShowSaga', err);
+  }
+}
+
+function* saveEditSaga(action) {
+  try {
+    console.log("in edit saga payload:", action.payload);
+    const { id, ...editedValues } = action.payload;
+    yield call(axios.put, `/api/tv/edit/${id}`, editedValues);
+    yield put({type: "FETCH_SHOWS"});
+    console.log("fetching shows after successful edit");
+  } catch (error) {
+    console.error("Error saving edited show:", error);
   }
 }
 

@@ -1,8 +1,11 @@
+import React, { useState } from "react";
 import {
   Button,
   TableBody,
   TableRow,
   TableCell,
+  TextField,
+  Checkbox,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { fetchShows } from "../../redux/actions/showActions";
@@ -18,6 +21,8 @@ const buttonStyle = {
 
 function ShowContainer({ shows, onShowClick, onEpisodeClick }) {
   const dispatch = useDispatch();
+  const [editingShowId, setEditingShowId] = useState(null);
+  const [editedValues, setEditedValues] = useState({});
 
   const getUserEmail = () => {
     const auth = getAuth();
@@ -58,6 +63,37 @@ function ShowContainer({ shows, onShowClick, onEpisodeClick }) {
     } catch (error) {
       console.error("Error decrementing episode:", error);
     }
+  };
+
+  const handleEditClick = (show) => {
+    setEditingShowId(show.id);
+    console.log("TESTING TESTING TESTING", show, show.id);
+    setEditedValues({
+      id: show.id,
+      notes: show.notes,
+      series_ended: show.series_ended,
+      is_completed: show.is_completed,
+      release_date: show.release_date,
+    });
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setEditedValues({
+      ...editedValues,
+      [name]: type === "checkbox" ? checked : value,
+    });
+  };
+
+  const handleSaveClick = () => {
+    console.log("edited values: ", editedValues);
+    dispatch({ type: "EDIT_SHOW", payload: editedValues });
+    setEditingShowId(null);
+  };
+
+  const handleCancelClick = () => {
+    setEditingShowId(null);
+    setEditedValues({});
   };
 
   return (
@@ -126,17 +162,62 @@ function ShowContainer({ shows, onShowClick, onEpisodeClick }) {
               </Button>
             </TableCell>
             <TableCell className="centerText">{show.genre}</TableCell>
-            <TableCell className="centerText">{show.notes || "----"}</TableCell>
-            <TableCell className="centerText">
-              {show.series_ended ? "Yes" : "No"}
-            </TableCell>
-            <TableCell className="centerText">
-              {show.is_completed ? "Yes" : "No"}
-            </TableCell>
-            <TableCell>
-              <Button>Edit</Button>
-            </TableCell>
-            <TableCell></TableCell>
+            {editingShowId === show.id ? (
+              <>
+                <TableCell className="centerText">
+                  <TextField
+                    name="notes"
+                    value={editedValues.notes}
+                    onChange={handleInputChange}
+                    size="small"
+                  />
+                </TableCell>
+                <TableCell className="centerText">
+                  <Checkbox
+                    name="series_ended"
+                    checked={editedValues.series_ended}
+                    onChange={handleInputChange}
+                  />
+                </TableCell>
+                <TableCell className="centerText">
+                  <Checkbox
+                    name="is_completed"
+                    checked={editedValues.is_completed}
+                    onChange={handleInputChange}
+                  />
+                </TableCell>
+                <TableCell>
+                  <Button onClick={() => handleSaveClick(show.id)}>Save</Button>
+                  <Button onClick={handleCancelClick}>Cancel</Button>
+                </TableCell>
+                <TableCell className="centerText">
+                  <TextField
+                    name="release_date"
+                    type="date"
+                    value={editedValues.release_date || ""}
+                    onChange={handleInputChange}
+                    size="small"
+                  />
+                </TableCell>
+                
+              </>
+            ) : (
+              <>
+                <TableCell className="centerText">{show.notes || "----"}</TableCell>
+                <TableCell className="centerText">
+                  {show.series_ended ? "Yes" : "No"}
+                </TableCell>
+                <TableCell className="centerText">
+                  {show.is_completed ? "Yes" : "No"}
+                </TableCell>
+                <TableCell>
+                  <Button onClick={() => handleEditClick(show)}>Edit</Button>
+                </TableCell>
+                <TableCell className="centerText">
+                  {show.release_date || "----"}
+                </TableCell>
+              </>
+            )}
           </TableRow>
         ))
       ) : (
