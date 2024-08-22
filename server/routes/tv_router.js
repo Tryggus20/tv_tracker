@@ -4,8 +4,9 @@ const pool = require("../modules/pool");
 
 // GET ROUTE
 router.get("/", (req, res) => {
-  const userEmail = req.headers['user-email']; 
-  const queryText = 'SELECT * FROM "shows" WHERE "user_email" = $1 ORDER BY show_name ASC';
+  const userEmail = req.headers["user-email"];
+  const queryText =
+    'SELECT * FROM "shows" WHERE "user_email" = $1 ORDER BY show_name ASC';
 
   pool
     .query(queryText, [userEmail])
@@ -30,7 +31,6 @@ router.get("/", (req, res) => {
 //       res.sendStatus(500);
 //     });
 // });
-
 
 // POST ROUTE
 router.post("/", (req, res) => {
@@ -99,23 +99,74 @@ router.post("/", (req, res) => {
 //     });
 // });
 
-router.put("/:id", async (req, res) => {
-    const { id } = req.params;
-    const { season, episode } = req.body;
-    // TODO: if you update season, resets episode to 1?
-    try {
-      if (season !== undefined) {
-        await pool.query('UPDATE shows SET season = $1 WHERE id = $2', [season, id]);
-      }
-      if (episode !== undefined) {
-        await pool.query('UPDATE shows SET episode = $1 WHERE id = $2', [episode, id]);
-      }
-      res.sendStatus(200);
-    } catch (error) {
-      console.error('Error updating show:', error);
-      res.sendStatus(500);
+// There has to be a better way to conditionally save data
+// But this should work for this case and for right now
+router.put("/edit/:id", async (req, res) => {
+  const { id } = req.params;
+  const { notes, series_ended, is_completed, release_date } = req.body;
+console.log("edit info:", req.params, req.body );
+  try {
+    const fields = [];
+    const values = [];
+    let index = 1;
+
+    if (notes !== undefined) {
+      fields.push(`notes = $${index++}`);
+      values.push(notes);
     }
-  });
+    if (series_ended !== undefined) {
+      fields.push(`series_ended = $${index++}`);
+      values.push(series_ended);
+    }
+    if (is_completed !== undefined) {
+      fields.push(`is_completed = $${index++}`);
+      values.push(is_completed);
+    }
+    if (release_date !== undefined) {
+      fields.push(`release_date = $${index++}`);
+      values.push(release_date);
+    }
+
+    if (fields.length > 0) {
+      const setClause = fields.join(", ");
+      const query = `UPDATE shows SET ${setClause} WHERE id = $${index}`;
+      values.push(id);
+
+      await pool.query(query, values);
+      res.sendStatus(200);
+    } else {
+      res.status(400).send("No fields to update");
+    }
+  } catch (error) {
+    console.error("Error editing show:", error);
+    res.sendStatus(500);
+  }
+});
+
+
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { season, episode } = req.body;
+  // TODO: if you update season, resets episode to 1?
+  try {
+    if (season !== undefined) {
+      await pool.query("UPDATE shows SET season = $1 WHERE id = $2", [
+        season,
+        id,
+      ]);
+    }
+    if (episode !== undefined) {
+      await pool.query("UPDATE shows SET episode = $1 WHERE id = $2", [
+        episode,
+        id,
+      ]);
+    }
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Error updating show:", error);
+    res.sendStatus(500);
+  }
+});
 
 // DELETE ROUTE
 router.delete("/:id", (req, res) => {
